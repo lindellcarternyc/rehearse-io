@@ -1,7 +1,5 @@
 import * as React from 'react'
 
-// import RehearsalDetail from './components/rehearsal-detail'
-// import MasterSchedule from './components/master-schedule'
 import { RehearsalDetails } from './constants/types'
 import { getRehearsalDetailsMap } from './mock/rehearsal-details-list'
 
