@@ -1,17 +1,14 @@
 import * as React from 'react'
 
-import { RehearsalDetails } from './constants/types'
-import { Schedule } from './constants/schedule'
-import { Rehearsal } from './constants/rehearsal'
+import { Schedule } from './constants/types/schedule'
+import { Rehearsal } from './constants/types/rehearsal'
+
 import { getSchedule, getRehearsal } from './mock/mock-schedule'
-import { getRehearsalDetailsMap } from './mock/rehearsal-details-list'
 
 import MasterRehearsalSchedulePage from './pages/master-rehearsal-schedule-page'
 import RehearsalDetailsPage from './pages/rehearsal-details-page'
 
 interface AppState {
-  rehearsalDetails: { [id: string]: RehearsalDetails }
-  currentRehearsalDetails: RehearsalDetails | null
   schedule: Schedule
   selectedRehearsal: Rehearsal | null
 }
@@ -19,28 +16,19 @@ class App extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props)
 
-    this.state = { 
-      rehearsalDetails: { },
-      currentRehearsalDetails: null,
+    this.state = {
       schedule: getSchedule(),
       selectedRehearsal: null
     }
   }
 
-  componentDidMount() {
-    const rehearsalDetails = getRehearsalDetailsMap()
-    this.setState({ rehearsalDetails })
-  }
-
   selectRehearsal = (id: string) => {
-    const currentRehearsalDetails = this.state.rehearsalDetails[id]
     const selectedRehearsal = getRehearsal(id, this.state.schedule)
-    this.setState({ currentRehearsalDetails, selectedRehearsal })
+    this.setState({ selectedRehearsal })
   }
 
-  clearSelectedRehearsal = () => {
-    const currentRehearsalDetails = null
-    this.setState({ currentRehearsalDetails, selectedRehearsal: null })
+  clearSelectedRehearsal = () => { 
+    this.setState({ selectedRehearsal: null })
   }
 
   currentPage(): JSX.Element  {
