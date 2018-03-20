@@ -1,15 +1,9 @@
 import * as React from 'react'
 
 import { Container, Header, List, } from 'semantic-ui-react'
+import { RehearsalDetails } from '../constants/types'
 
-interface RehearsalDetailProps {
-  date: string
-  location: string
-  start: string
-  end: string
-  staff: string[]
-  roles: string[]
-}
+interface RehearsalDetailProps extends RehearsalDetails { }
 const RehearsalDetail = (props: RehearsalDetailProps): JSX.Element => {
   const { date, location, start, end, staff, roles } = props
   return (

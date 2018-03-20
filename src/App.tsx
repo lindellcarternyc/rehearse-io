@@ -1,8 +1,9 @@
 import * as React from 'react'
 
 import RehearsalDetail from './components/rehearsal-detail'
+import { RehearsalDetails } from './constants/types'
 
-const MOCK_REHEARSAL = {
+const MOCK_REHEARSAL: RehearsalDetails = {
   date: 'Tue, March 20, 2018',
   location: 'Our Lady of Perpetual Help',
   start: '7:00PM',
