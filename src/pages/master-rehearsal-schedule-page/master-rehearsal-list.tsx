@@ -1,7 +1,6 @@
 import * as React from 'react'
 
 import { List } from 'semantic-ui-react'
-// import { RehearsalDetails } from '../../constants/types'
 import { Schedule } from '../../constants/types/schedule'
 
 interface MasterRehearsalListItemProps {
