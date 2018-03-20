@@ -1,60 +1,36 @@
 import * as React from 'react'
 
+import { Switch, Route } from 'react-router-dom'
+
 import { Schedule } from './constants/types/schedule'
-import { Rehearsal } from './constants/types/rehearsal'
 
 import { getSchedule, getRehearsal } from './mock/mock-schedule'
 
 import MasterRehearsalSchedulePage from './pages/master-rehearsal-schedule-page'
 import RehearsalDetailsPage from './pages/rehearsal-details-page'
 
-interface AppState {
-  schedule: Schedule
-  selectedRehearsal: Rehearsal | null
-}
-class App extends React.Component<{}, AppState> {
-  constructor(props: {}) {
-    super(props)
-
-    this.state = {
-      schedule: getSchedule(),
-      selectedRehearsal: null
-    }
-  }
-
-  selectRehearsal = (id: string) => {
-    const selectedRehearsal = getRehearsal(id, this.state.schedule)
-    this.setState({ selectedRehearsal })
-  }
-
-  clearSelectedRehearsal = () => { 
-    this.setState({ selectedRehearsal: null })
-  }
-
-  currentPage(): JSX.Element  {
-    const { schedule, selectedRehearsal } = this.state
-    if ( selectedRehearsal !== null ) {
-      return (
-        <RehearsalDetailsPage 
-          rehearsal={selectedRehearsal}
-          clearSelectedRehearsal={this.clearSelectedRehearsal}
-        />
-      )
-    }
-    return (
-      <MasterRehearsalSchedulePage 
-        schedule={schedule}
-        select={this.selectRehearsal}
-        clear={this.clearSelectedRehearsal}
-      />
-    )
-  }
+class App extends React.Component<{}, {}> {
+  readonly schedule: Schedule = getSchedule()
 
   render() {
     return (
-      <div className="App">
-        {this.currentPage()}
-      </div>
+      <Switch>
+        <Route 
+          exact 
+          path="/" 
+          render={() => {
+            return <MasterRehearsalSchedulePage schedule={this.schedule} />
+          }} 
+        />
+        <Route 
+          path="/rehearsal/:rehearsalId"
+          render={({match}) => {
+            const params = match.params as { rehearsalId: string }
+            const rehearsal = getRehearsal(params.rehearsalId, this.schedule)
+            return <RehearsalDetailsPage rehearsal={rehearsal} />
+          }}
+        />
+      </Switch>
     )
   }
 }

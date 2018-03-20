@@ -14,7 +14,7 @@ interface MasterScheduleProps {
 const MasterSchedule = (props: MasterScheduleProps ) => {
   return (
     <Container>
-      <List>
+      <List selection>
         {props.dates.map(({ date, id }) => {
           return (
             <List.Item key={id} content={date} onClick={() => { props.selectRehearsal(id) }} />
