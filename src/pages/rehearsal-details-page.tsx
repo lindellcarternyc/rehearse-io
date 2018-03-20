@@ -14,7 +14,7 @@ const RehearsalDetailsPage = (props: RehearsalDetailsPageProps): JSX.Element => 
   return (
     <Layout>
       <Button color="black" content="Back" onClick={props.clearSelectedRehearsal}/>
-      <RehearsalDetail {...props.rehearsal} />
+      <RehearsalDetail rehearsal={props.rehearsal} />
     </Layout>
   )
 }
