@@ -1,14 +1,19 @@
 import * as React from 'react'
 
 import { RehearsalDetails } from './constants/types'
+import { Schedule } from './constants/schedule'
+import { Rehearsal } from './constants/rehearsal'
+import { getSchedule, getRehearsal } from './mock/mock-schedule'
 import { getRehearsalDetailsMap } from './mock/rehearsal-details-list'
 
-import MasterRehearsalPage from './pages/master-reharsal-page'
+import MasterRehearsalSchedulePage from './pages/master-rehearsal-schedule-page'
 import RehearsalDetailsPage from './pages/rehearsal-details-page'
 
 interface AppState {
   rehearsalDetails: { [id: string]: RehearsalDetails }
   currentRehearsalDetails: RehearsalDetails | null
+  schedule: Schedule
+  selectedRehearsal: Rehearsal | null
 }
 class App extends React.Component<{}, AppState> {
   constructor(props: {}) {
@@ -16,7 +21,9 @@ class App extends React.Component<{}, AppState> {
 
     this.state = { 
       rehearsalDetails: { },
-      currentRehearsalDetails: null
+      currentRehearsalDetails: null,
+      schedule: getSchedule(),
+      selectedRehearsal: null
     }
   }
 
@@ -25,38 +32,32 @@ class App extends React.Component<{}, AppState> {
     this.setState({ rehearsalDetails })
   }
 
-  get dates(): { id: string, date: string }[] {
-    const { rehearsalDetails } = this.state
-    const ids = Object.keys(rehearsalDetails)
-    return ids.map(id => {
-      const { date } = rehearsalDetails[id]
-      return { id, date } 
-    })
-  }
-
   selectRehearsal = (id: string) => {
     const currentRehearsalDetails = this.state.rehearsalDetails[id]
-    this.setState({ currentRehearsalDetails })
+    const selectedRehearsal = getRehearsal(id, this.state.schedule)
+    this.setState({ currentRehearsalDetails, selectedRehearsal })
   }
 
   clearSelectedRehearsal = () => {
     const currentRehearsalDetails = null
-    this.setState({ currentRehearsalDetails })
+    this.setState({ currentRehearsalDetails, selectedRehearsal: null })
   }
 
   currentPage(): JSX.Element  {
-    if (this.state.currentRehearsalDetails !== null) {
+    const { schedule, selectedRehearsal } = this.state
+    if ( selectedRehearsal !== null ) {
       return (
         <RehearsalDetailsPage 
-          details={this.state.currentRehearsalDetails} 
+          rehearsal={selectedRehearsal}
           clearSelectedRehearsal={this.clearSelectedRehearsal}
         />
       )
     }
     return (
-      <MasterRehearsalPage 
-        details={this.state.rehearsalDetails}
-        selectRehearsal={this.selectRehearsal}
+      <MasterRehearsalSchedulePage 
+        schedule={schedule}
+        select={this.selectRehearsal}
+        clear={this.clearSelectedRehearsal}
       />
     )
   }
